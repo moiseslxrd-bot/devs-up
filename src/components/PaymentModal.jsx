@@ -31,7 +31,7 @@ function PaymentModal({ course, onClose }) {
 
         <div className="pix-section">
           <h4>📱 Pagamento via PIX</h4>
-          <p>Copie a chave PIX abaixo e faça o pagamento no seu banco:</p>
+          <p>xmoisesplayer@gmail.com</p>
           <div className="pix-key-box">
             <code>{pixKey}</code>
             <button className="btn-copy" onClick={handleCopy}>
