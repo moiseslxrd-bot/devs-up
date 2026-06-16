@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import API_URL from "../config";
 import "../styles/AdminPanel.css";
 
 function PixConfig({ token }) {
@@ -6,7 +7,7 @@ function PixConfig({ token }) {
   const [msg, setMsg] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3001/admin/pix", {
+    fetch(`${API_URL}/admin/pix`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(r => r.json())
@@ -15,7 +16,7 @@ function PixConfig({ token }) {
 
   function handleSave(e) {
     e.preventDefault();
-    fetch("http://localhost:3001/admin/pix", {
+    fetch(`${API_URL}/admin/pix`, {
       method: "PUT",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ pixKey }),
@@ -57,15 +58,15 @@ function AdminPanel({ token, onLogout }) {
   };
 
   function loadStats() {
-    fetch("http://localhost:3001/admin/stats", { headers }).then(r => r.json()).then(setStats);
+    fetch(`${API_URL}/admin/stats`, { headers }).then(r => r.json()).then(setStats);
   }
 
   function loadCourses() {
-    fetch("http://localhost:3001/admin/courses", { headers }).then(r => r.json()).then(setCourses);
+    fetch(`${API_URL}/admin/courses`, { headers }).then(r => r.json()).then(setCourses);
   }
 
   function loadSuggestions() {
-    fetch("http://localhost:3001/admin/suggestions", { headers }).then(r => r.json()).then(setSuggestions);
+    fetch(`${API_URL}/admin/suggestions`, { headers }).then(r => r.json()).then(setSuggestions);
   }
 
   useEffect(() => { loadStats(); loadCourses(); loadSuggestions(); }, []);
@@ -78,8 +79,8 @@ function AdminPanel({ token, onLogout }) {
     e.preventDefault();
     const body = { title, description, price, tag, emoji };
     const url = editId
-      ? `http://localhost:3001/admin/courses/${editId}`
-      : "http://localhost:3001/admin/courses";
+      ? `${API_URL}/admin/courses/${editId}`
+      : `${API_URL}/admin/courses`;
     const method = editId ? "PUT" : "POST";
 
     fetch(url, { method, headers, body: JSON.stringify(body) })
@@ -104,12 +105,12 @@ function AdminPanel({ token, onLogout }) {
 
   function handleDeleteCourse(id) {
     if (!confirm("Deletar este curso?")) return;
-    fetch(`http://localhost:3001/admin/courses/${id}`, { method: "DELETE", headers })
+    fetch(`${API_URL}/admin/courses/${id}`, { method: "DELETE", headers })
       .then(() => { loadCourses(); loadStats(); });
   }
 
   function handleDeleteSuggestion(id) {
-    fetch(`http://localhost:3001/admin/suggestions/${id}`, { method: "DELETE", headers })
+    fetch(`${API_URL}/admin/suggestions/${id}`, { method: "DELETE", headers })
       .then(() => loadSuggestions());
   }
 

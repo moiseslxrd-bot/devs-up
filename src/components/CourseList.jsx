@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import CourseCard from "./CourseCard";
+import API_URL from "../config";
 import "../styles/CourseList.css";
 
 function CourseList({ onSelectCourse }) {
@@ -7,7 +8,7 @@ function CourseList({ onSelectCourse }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3001/courses")
+    fetch(`${API_URL}/courses`)
       .then((res) => res.json())
       .then((data) => {
         setCourses(data);

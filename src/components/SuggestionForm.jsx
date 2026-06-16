@@ -1,4 +1,5 @@
 import { useState } from "react";
+import API_URL from "../config";
 import "../styles/SuggestionForm.css";
 
 function SuggestionForm() {
@@ -13,7 +14,7 @@ function SuggestionForm() {
     
     setLoading(true);
     
-    fetch("http://localhost:3001/suggestions", {
+    fetch(`${API_URL}/suggestions`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, description }),

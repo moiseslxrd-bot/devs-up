@@ -1,4 +1,5 @@
 import { useState } from "react";
+import API_URL from "../config";
 import "../styles/Login.css";
 
 function Login({ onLogin }) {
@@ -10,7 +11,7 @@ function Login({ onLogin }) {
     e.preventDefault();
     setError("");
 
-    fetch("http://localhost:3001/login", {
+    fetch(`${API_URL}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),

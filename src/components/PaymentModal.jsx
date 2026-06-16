@@ -1,22 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import API_URL from "../config";
 import "../styles/PaymentModal.css";
 
 function PaymentModal({ course, onClose }) {
-  const [pixKey, setPixKey] = useState("");
-  const [copied, setCopied] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetch("http://localhost:3001/admin/pix", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` },
+  function handlePay() {
+    setLoading(true);
+
+    fetch(`${API_URL}/create-preference`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        courseId: course.id,
+        title: course.title,
+        price: course.price,
+      }),
     })
       .then((res) => res.json())
-      .then((data) => setPixKey(data.pixKey || "chave_pix@exemplo.com"));
-  }, []);
-
-  function handleCopy() {
-    navigator.clipboard.writeText(pixKey);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+      .then((data) => {
+        if (data.init_point) {
+          window.location.href = data.init_point;
+        } else {
+          alert("Erro ao gerar pagamento");
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        alert("Erro de conexão");
+        setLoading(false);
+      });
   }
 
   return (
@@ -28,19 +41,11 @@ function PaymentModal({ course, onClose }) {
         <p className="modal-description">{course.description}</p>
         <div className="modal-price">{course.price}</div>
 
-        <div className="pix-section">
-          <h4>📱 Pagamento via PIX</h4>
-          <p>Copie a chave PIX abaixo e faça o pagamento no seu banco:</p>
-          <div className="pix-key-box">
-            <code>{pixKey}</code>
-            <button className="btn-copy" onClick={handleCopy}>
-              {copied ? "✅ Copiado!" : "📋 Copiar"}
-            </button>
-          </div>
-          <p className="pix-note">
-            Após o pagamento, enviaremos o acesso por e-mail em até 5 minutos.
-          </p>
-        </div>
+        <button className="btn-mp" onClick={handlePay} disabled={loading}>
+          {loading ? "Redirecionando..." : "💳 Pagar com Mercado Pago"}
+        </button>
+
+        <p className="secure-note">🔒 Pagamento seguro via Mercado Pago</p>
       </div>
     </div>
   );
