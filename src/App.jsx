@@ -2,6 +2,7 @@ import { useState } from "react";
 import CourseList from "./components/CourseList";
 import CourseDetail from "./components/CourseDetail";
 import SuggestionForm from "./components/SuggestionForm";
+import Support from "./components/Support";
 import About from "./components/About";
 import Login from "./components/Login";
 import AdminPanel from "./components/AdminPanel";
@@ -49,12 +50,12 @@ function App() {
       <nav className="navbar">
         <div className="navbar-inner">
           <span className="nav-logo" onClick={() => handleNavClick("home")} style={{cursor: "pointer"}}>
-  🚀 Devs Up
-</span>
+            🚀 Devs Up
+          </span>
           <div className="nav-links">
             <button className="nav-link" onClick={() => handleNavClick("home")}>Cursos</button>
             <button className="nav-link" onClick={() => handleNavClick("about")}>Sobre</button>
-            <button className="nav-link" onClick={handleSugerir}>Sugerir</button>
+            <button className="nav-link" onClick={handleSugerir}>Suporte</button>
             <button className="nav-link" onClick={() => handleNavClick("login")}>Login</button>
           </div>
         </div>
@@ -73,7 +74,10 @@ function App() {
               <CourseList onSelectCourse={setSelectedCourse} />
             )}
           </main>
-          <div id="sugestao"><SuggestionForm /></div>
+          <div id="sugestao">
+            <Support />
+            <SuggestionForm />
+          </div>
         </>
       )}
 

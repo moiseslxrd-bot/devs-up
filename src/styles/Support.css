@@ -1,0 +1,43 @@
+.support {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 500px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.support-emoji {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+.support h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.support p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.btn-whatsapp {
+  display: inline-block;
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  color: white;
+  padding: 0.8rem 1.8rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+}
+
+.btn-whatsapp:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+}
