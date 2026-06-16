@@ -8,12 +8,17 @@ import Feedback from "./components/Feedback";
 import About from "./components/About";
 import Login from "./components/Login";
 import AdminPanel from "./components/AdminPanel";
+import StudentLogin from "./components/StudentLogin";
+import Register from "./components/Register";
+import StudentPanel from "./components/StudentPanel";
 import "./styles/App.css";
 
 function App() {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [page, setPage] = useState("home");
   const [token, setToken] = useState(localStorage.getItem("token") || null);
+  const [studentToken, setStudentToken] = useState(localStorage.getItem("studentToken") || null);
+  const [authPage, setAuthPage] = useState("login");
 
   function handleLogin(token, username) {
     setToken(token);
@@ -24,6 +29,18 @@ function App() {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     setToken(null);
+    setPage("home");
+  }
+
+  function handleStudentLogin(token, name) {
+    setStudentToken(token);
+  }
+
+  function handleStudentLogout() {
+    localStorage.removeItem("studentToken");
+    localStorage.removeItem("studentName");
+    localStorage.removeItem("studentEmail");
+    setStudentToken(null);
     setPage("home");
   }
 
@@ -47,6 +64,17 @@ function App() {
     return <Login onLogin={handleLogin} />;
   }
 
+  if (studentToken && page === "student") {
+    return <StudentPanel token={studentToken} onLogout={handleStudentLogout} />;
+  }
+
+  if (page === "student" && !studentToken) {
+    if (authPage === "register") {
+      return <Register onSwitch={() => setAuthPage("login")} />;
+    }
+    return <StudentLogin onLogin={handleStudentLogin} onSwitch={() => setAuthPage("register")} />;
+  }
+
   return (
     <div className="app">
       <nav className="navbar">
@@ -59,6 +87,7 @@ function App() {
             <button className="nav-link" onClick={() => handleNavClick("cursos")}>Cursos</button>
             <button className="nav-link" onClick={() => handleNavClick("about")}>Sobre</button>
             <button className="nav-link" onClick={handleSugerir}>Suporte</button>
+            <button className="nav-link" onClick={() => { setPage("student"); setAuthPage("login"); }}>Área do Aluno</button>
             <button className="nav-link" onClick={() => handleNavClick("login")}>Login</button>
           </div>
         </div>
@@ -79,9 +108,7 @@ function App() {
               <CourseList onSelectCourse={setSelectedCourse} />
             )}
           </main>
-
           <Feedback />
-
           <div id="sugestao">
             <Support />
             <SuggestionForm />

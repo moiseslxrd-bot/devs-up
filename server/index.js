@@ -12,10 +12,8 @@ const SECRET = process.env.SECRET_KEY || "fallback_secret";
 app.use(cors());
 app.use(express.json());
 
-// Banco de dados
 const db = new Database("devsup.db");
 
-// Cria tabelas
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,12 +44,28 @@ db.exec(`
     message TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
+
+  CREATE TABLE IF NOT EXISTS students (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE TABLE IF NOT EXISTS enrollments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id INTEGER NOT NULL,
+    course_id INTEGER NOT NULL,
+    progress INTEGER DEFAULT 0,
+    completed BOOLEAN DEFAULT 0,
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id)
+  );
 `);
 
-// Adiciona coluna topics se não existir
 try { db.exec("ALTER TABLE courses ADD COLUMN topics TEXT DEFAULT ''"); } catch {}
 
-// Cria admin padrão se não existir
 const adminUser = process.env.ADMIN_USER || "admin";
 const adminPass = process.env.ADMIN_PASS || "admin123";
 const adminExists = db.prepare("SELECT * FROM users WHERE username = ?").get(adminUser);
@@ -60,7 +74,6 @@ if (!adminExists) {
   db.prepare("INSERT INTO users (username, password) VALUES (?, ?)").run(adminUser, hash);
 }
 
-// Insere cursos iniciais
 const count = db.prepare("SELECT COUNT(*) as total FROM courses").get();
 if (count.total === 0) {
   const insert = db.prepare("INSERT INTO courses (title, description, price, tag, emoji, topics) VALUES (?, ?, ?, ?, ?, ?)");
@@ -76,7 +89,6 @@ if (count.total === 0) {
   insertMany(courses);
 }
 
-// Middleware de autenticação
 function authMiddleware(req, res, next) {
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) return res.status(401).json({ error: "Token não fornecido" });
@@ -89,8 +101,6 @@ function authMiddleware(req, res, next) {
   }
 }
 
-// ROTAS PÚBLICAS
-
 app.get("/courses", (req, res) => {
   const courses = db.prepare("SELECT * FROM courses").all();
   res.json(courses);
@@ -98,37 +108,91 @@ app.get("/courses", (req, res) => {
 
 app.post("/suggestions", (req, res) => {
   const { title, description } = req.body;
-  if (!title || !description) {
-    return res.status(400).json({ error: "Título e descrição são obrigatórios." });
-  }
+  if (!title || !description) return res.status(400).json({ error: "Título e descrição são obrigatórios." });
   db.prepare("INSERT INTO suggestions (title, description) VALUES (?, ?)").run(title, description);
   res.status(201).json({ message: "Sugestão enviada com sucesso!" });
 });
 
 app.post("/feedback", (req, res) => {
   const { name, message } = req.body;
-  if (!name || !message) {
-    return res.status(400).json({ error: "Nome e mensagem são obrigatórios." });
-  }
+  if (!name || !message) return res.status(400).json({ error: "Nome e mensagem são obrigatórios." });
   db.prepare("INSERT INTO feedbacks (name, message) VALUES (?, ?)").run(name, message);
   res.status(201).json({ message: "Feedback enviado!" });
 });
 
-// LOGIN
+app.post("/register", (req, res) => {
+  const { name, email, password } = req.body;
+  if (!name || !email || !password) return res.status(400).json({ error: "Todos os campos são obrigatórios." });
+  const exists = db.prepare("SELECT * FROM students WHERE email = ?").get(email);
+  if (exists) return res.status(400).json({ error: "E-mail já cadastrado." });
+  const hash = bcrypt.hashSync(password, 10);
+  db.prepare("INSERT INTO students (name, email, password) VALUES (?, ?, ?)").run(name, email, hash);
+  res.status(201).json({ message: "Conta criada com sucesso!" });
+});
+
+app.post("/student/login", (req, res) => {
+  const { email, password } = req.body;
+  const student = db.prepare("SELECT * FROM students WHERE email = ?").get(email);
+  if (!student) return res.status(401).json({ error: "E-mail não encontrado" });
+  const valid = bcrypt.compareSync(password, student.password);
+  if (!valid) return res.status(401).json({ error: "Senha incorreta" });
+  const token = jwt.sign({ id: student.id, name: student.name, email: student.email, type: "student" }, SECRET, { expiresIn: "24h" });
+  res.json({ token, name: student.name, email: student.email });
+});
+
+app.post("/enroll", (req, res) => {
+  const { token, courseId } = req.body;
+  try {
+    const decoded = jwt.verify(token, SECRET);
+    if (decoded.type !== "student") return res.status(401).json({ error: "Acesso negado" });
+    const exists = db.prepare("SELECT * FROM enrollments WHERE student_id = ? AND course_id = ?").get(decoded.id, courseId);
+    if (exists) return res.json({ message: "Você já está matriculado neste curso." });
+    db.prepare("INSERT INTO enrollments (student_id, course_id, progress) VALUES (?, ?, 0)").run(decoded.id, courseId);
+    res.status(201).json({ message: "Matrícula realizada!" });
+  } catch {
+    res.status(401).json({ error: "Token inválido" });
+  }
+});
+
+app.put("/progress", (req, res) => {
+  const { token, courseId, progress } = req.body;
+  try {
+    const decoded = jwt.verify(token, SECRET);
+    const completed = progress >= 100 ? 1 : 0;
+    db.prepare("UPDATE enrollments SET progress = ?, completed = ? WHERE student_id = ? AND course_id = ?")
+      .run(progress, completed, decoded.id, courseId);
+    res.json({ message: "Progresso atualizado!" });
+  } catch {
+    res.status(401).json({ error: "Token inválido" });
+  }
+});
+
+app.get("/my-courses", (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ error: "Token não fornecido" });
+  try {
+    const decoded = jwt.verify(token, SECRET);
+    const courses = db.prepare(`
+      SELECT c.*, e.progress, e.completed 
+      FROM enrollments e 
+      JOIN courses c ON e.course_id = c.id 
+      WHERE e.student_id = ?
+    `).all(decoded.id);
+    res.json(courses);
+  } catch {
+    res.status(401).json({ error: "Token inválido" });
+  }
+});
 
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
   const user = db.prepare("SELECT * FROM users WHERE username = ?").get(username);
   if (!user) return res.status(401).json({ error: "Usuário não encontrado" });
-  
   const valid = bcrypt.compareSync(password, user.password);
   if (!valid) return res.status(401).json({ error: "Senha incorreta" });
-  
   const token = jwt.sign({ id: user.id, username: user.username }, SECRET, { expiresIn: "24h" });
   res.json({ token, username: user.username });
 });
-
-// ROTAS PROTEGIDAS (ADMIN)
 
 app.get("/admin/suggestions", authMiddleware, (req, res) => {
   const suggestions = db.prepare("SELECT * FROM suggestions ORDER BY created_at DESC").all();
@@ -142,9 +206,7 @@ app.get("/admin/feedbacks", authMiddleware, (req, res) => {
 
 app.post("/admin/courses", authMiddleware, (req, res) => {
   const { title, description, price, tag, emoji, topics } = req.body;
-  if (!title || !description || !price || !tag || !emoji) {
-    return res.status(400).json({ error: "Todos os campos são obrigatórios." });
-  }
+  if (!title || !description || !price || !tag || !emoji) return res.status(400).json({ error: "Todos os campos são obrigatórios." });
   db.prepare("INSERT INTO courses (title, description, price, tag, emoji, topics) VALUES (?, ?, ?, ?, ?, ?)").run(title, description, price, tag, emoji, topics || "");
   res.status(201).json({ message: "Curso criado com sucesso!" });
 });
