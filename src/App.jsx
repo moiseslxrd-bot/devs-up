@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Home from "./components/Home";
 import CourseList from "./components/CourseList";
 import CourseDetail from "./components/CourseDetail";
 import SuggestionForm from "./components/SuggestionForm";
@@ -53,7 +54,8 @@ function App() {
             🚀 Devs Up
           </span>
           <div className="nav-links">
-            <button className="nav-link" onClick={() => handleNavClick("home")}>Cursos</button>
+            <button className="nav-link" onClick={() => handleNavClick("home")}>Início</button>
+            <button className="nav-link" onClick={() => handleNavClick("cursos")}>Cursos</button>
             <button className="nav-link" onClick={() => handleNavClick("about")}>Sobre</button>
             <button className="nav-link" onClick={handleSugerir}>Suporte</button>
             <button className="nav-link" onClick={() => handleNavClick("login")}>Login</button>
@@ -61,7 +63,9 @@ function App() {
         </div>
       </nav>
 
-      {page === "home" && (
+      {page === "home" && <Home onNavigate={handleNavClick} />}
+
+      {page === "cursos" && (
         <>
           <header className="app-header">
             <h1><span className="gradient-text">Devs Up</span></h1>
