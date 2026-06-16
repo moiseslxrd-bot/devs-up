@@ -11,7 +11,7 @@ function PaymentModal({ course, onClose }) {
       headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` },
     })
       .then((res) => res.json())
-      .then((data) => setPixKey(data.pixKey || "chave_pix@exemplo.com"));
+      .then((data) => setPixKey(data.pixKey || ""));
   }, []);
 
   function handleCopy() {
@@ -31,7 +31,7 @@ function PaymentModal({ course, onClose }) {
 
         <div className="pix-section">
           <h4>📱 Pagamento via PIX</h4>
-          <p>xmoisesplayer@gmail.com</p>
+          <p>Copie a chave PIX abaixo e faça o pagamento no seu banco:</p>
           <div className="pix-key-box">
             <code>{pixKey}</code>
             <button className="btn-copy" onClick={handleCopy}>
