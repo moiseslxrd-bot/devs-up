@@ -39,6 +39,13 @@ db.exec(`
     description TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
+
+  CREATE TABLE IF NOT EXISTS feedbacks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    message TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
 `);
 
 // Adiciona coluna topics se não existir
@@ -98,6 +105,15 @@ app.post("/suggestions", (req, res) => {
   res.status(201).json({ message: "Sugestão enviada com sucesso!" });
 });
 
+app.post("/feedback", (req, res) => {
+  const { name, message } = req.body;
+  if (!name || !message) {
+    return res.status(400).json({ error: "Nome e mensagem são obrigatórios." });
+  }
+  db.prepare("INSERT INTO feedbacks (name, message) VALUES (?, ?)").run(name, message);
+  res.status(201).json({ message: "Feedback enviado!" });
+});
+
 // LOGIN
 
 app.post("/login", (req, res) => {
@@ -119,6 +135,11 @@ app.get("/admin/suggestions", authMiddleware, (req, res) => {
   res.json(suggestions);
 });
 
+app.get("/admin/feedbacks", authMiddleware, (req, res) => {
+  const feedbacks = db.prepare("SELECT * FROM feedbacks ORDER BY created_at DESC").all();
+  res.json(feedbacks);
+});
+
 app.post("/admin/courses", authMiddleware, (req, res) => {
   const { title, description, price, tag, emoji, topics } = req.body;
   if (!title || !description || !price || !tag || !emoji) {
@@ -133,13 +154,11 @@ app.delete("/admin/courses/:id", authMiddleware, (req, res) => {
   res.json({ message: "Curso removido com sucesso!" });
 });
 
-// Listar todos os cursos (admin)
 app.get("/admin/courses", authMiddleware, (req, res) => {
   const courses = db.prepare("SELECT * FROM courses ORDER BY id DESC").all();
   res.json(courses);
 });
 
-// Atualizar curso
 app.put("/admin/courses/:id", authMiddleware, (req, res) => {
   const { title, description, price, tag, emoji, topics } = req.body;
   db.prepare("UPDATE courses SET title=?, description=?, price=?, tag=?, emoji=?, topics=? WHERE id=?")
@@ -147,20 +166,22 @@ app.put("/admin/courses/:id", authMiddleware, (req, res) => {
   res.json({ message: "Curso atualizado!" });
 });
 
-// Estatísticas
 app.get("/admin/stats", authMiddleware, (req, res) => {
   const totalCourses = db.prepare("SELECT COUNT(*) as total FROM courses").get();
   const totalSuggestions = db.prepare("SELECT COUNT(*) as total FROM suggestions").get();
   res.json({ courses: totalCourses.total, suggestions: totalSuggestions.total });
 });
 
-// Deletar sugestão
 app.delete("/admin/suggestions/:id", authMiddleware, (req, res) => {
   db.prepare("DELETE FROM suggestions WHERE id = ?").run(req.params.id);
   res.json({ message: "Sugestão removida!" });
 });
 
-// Chave PIX
+app.delete("/admin/feedbacks/:id", authMiddleware, (req, res) => {
+  db.prepare("DELETE FROM feedbacks WHERE id = ?").run(req.params.id);
+  res.json({ message: "Feedback removido!" });
+});
+
 app.get("/admin/pix", authMiddleware, (req, res) => {
   const row = db.prepare("SELECT value FROM settings WHERE key = ?").get("pix_key");
   res.json({ pixKey: row?.value || "" });

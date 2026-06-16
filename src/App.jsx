@@ -4,6 +4,7 @@ import CourseList from "./components/CourseList";
 import CourseDetail from "./components/CourseDetail";
 import SuggestionForm from "./components/SuggestionForm";
 import Support from "./components/Support";
+import Feedback from "./components/Feedback";
 import About from "./components/About";
 import Login from "./components/Login";
 import AdminPanel from "./components/AdminPanel";
@@ -80,6 +81,7 @@ function App() {
           </main>
           <div id="sugestao">
             <Support />
+            <Feedback />
             <SuggestionForm />
           </div>
         </>
