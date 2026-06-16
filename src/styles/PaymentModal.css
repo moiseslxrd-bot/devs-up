@@ -118,3 +118,36 @@
   font-size: 0.78rem !important;
   color: #666 !important;
 }
+
+.email-section {
+  background: #0f0f0f;
+  border-radius: 14px;
+  padding: 1.5rem;
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.email-section h4 {
+  margin-bottom: 0.5rem;
+}
+
+.email-section input {
+  width: 100%;
+  padding: 0.7rem;
+  margin: 0.8rem 0;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: #1a1a1e;
+  color: #f0f0f0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+}
+
+.email-section input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.email-section .btn-buy {
+  width: 100%;
+}
