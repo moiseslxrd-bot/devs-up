@@ -49,8 +49,8 @@ function App() {
       <nav className="navbar">
         <div className="navbar-inner">
           <span className="nav-logo" onClick={() => handleNavClick("home")} style={{cursor: "pointer"}}>
-            Devs Up
-          </span>
+  🚀 Devs Up
+</span>
           <div className="nav-links">
             <button className="nav-link" onClick={() => handleNavClick("home")}>Cursos</button>
             <button className="nav-link" onClick={() => handleNavClick("about")}>Sobre</button>
