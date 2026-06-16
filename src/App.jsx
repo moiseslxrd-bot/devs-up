@@ -79,9 +79,11 @@ function App() {
               <CourseList onSelectCourse={setSelectedCourse} />
             )}
           </main>
+
+          <Feedback />
+
           <div id="sugestao">
             <Support />
-            <Feedback />
             <SuggestionForm />
           </div>
         </>
