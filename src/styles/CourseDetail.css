@@ -1,19 +1,23 @@
 .course-detail {
   background: var(--card-bg);
-  border-radius: 12px;
-  padding: 2rem;
+  border-radius: 16px;
+  padding: 2.5rem;
   max-width: 600px;
   margin: 0 auto;
   text-align: center;
+  border: 1px solid var(--card-border);
+  animation: fadeIn 0.4s ease;
 }
 
 .btn-back {
   background: none;
-  color: var(--tag);
+  color: var(--primary-light);
   border: none;
-  font-size: 1rem;
+  font-size: 0.95rem;
   cursor: pointer;
   margin-bottom: 1.5rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
 }
 
 .btn-back:hover {
@@ -26,24 +30,73 @@
 }
 
 .detail-tag {
-  background: var(--tag);
-  color: white;
-  font-size: 0.75rem;
-  padding: 0.2rem 0.6rem;
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--primary-light);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
   border-radius: 20px;
   display: inline-block;
   margin-bottom: 1rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .detail-description {
-  color: #cccccc;
-  margin: 1rem 0 2rem;
+  color: var(--text-secondary);
+  margin: 1rem 0;
   line-height: 1.6;
+}
+
+.detail-topics {
+  text-align: left;
+  margin: 1.5rem 0;
+}
+
+.detail-topics h3 {
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+  color: var(--text);
+}
+
+.detail-topics ul {
+  list-style: none;
+  padding: 0;
+}
+
+.detail-topics li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--card-border);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.detail-topics li::before {
+  content: "✅ ";
 }
 
 .detail-price {
   display: block;
   font-size: 2rem;
-  color: var(--btn);
-  margin-bottom: 1.5rem;
+  font-weight: 800;
+  color: var(--accent);
+  margin: 1.5rem 0;
+}
+
+.btn-buy {
+  background: linear-gradient(135deg, var(--primary), #7c3aed);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s;
+}
+
+.btn-buy:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
 }

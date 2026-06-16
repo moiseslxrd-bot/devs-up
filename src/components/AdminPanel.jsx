@@ -50,6 +50,7 @@ function AdminPanel({ token, onLogout }) {
   const [price, setPrice] = useState("");
   const [tag, setTag] = useState("");
   const [emoji, setEmoji] = useState("");
+  const [topics, setTopics] = useState("");
   const [msg, setMsg] = useState("");
 
   const headers = {
@@ -72,12 +73,12 @@ function AdminPanel({ token, onLogout }) {
   useEffect(() => { loadStats(); loadCourses(); loadSuggestions(); }, []);
 
   function clearForm() {
-    setTitle(""); setDescription(""); setPrice(""); setTag(""); setEmoji(""); setEditId(null);
+    setTitle(""); setDescription(""); setPrice(""); setTag(""); setEmoji(""); setTopics(""); setEditId(null);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    const body = { title, description, price, tag, emoji };
+    const body = { title, description, price, tag, emoji, topics };
     const url = editId
       ? `${API_URL}/admin/courses/${editId}`
       : `${API_URL}/admin/courses`;
@@ -100,6 +101,7 @@ function AdminPanel({ token, onLogout }) {
     setPrice(course.price);
     setTag(course.tag);
     setEmoji(course.emoji);
+    setTopics(course.topics || "");
     setTab("add");
   }
 
@@ -151,6 +153,7 @@ function AdminPanel({ token, onLogout }) {
             <input placeholder="Preço (R$ 27)" value={price} onChange={e => setPrice(e.target.value)} required />
             <input placeholder="Tag (React)" value={tag} onChange={e => setTag(e.target.value)} required />
             <input placeholder="Emoji (🧠)" value={emoji} onChange={e => setEmoji(e.target.value)} required />
+            <input placeholder="Tópicos (separados por vírgula)" value={topics} onChange={e => setTopics(e.target.value)} />
             <div className="form-buttons">
               <button type="submit" className="btn-buy">{editId ? "Atualizar" : "Adicionar"}</button>
               {editId && <button type="button" className="btn-cancel" onClick={clearForm}>Cancelar</button>}

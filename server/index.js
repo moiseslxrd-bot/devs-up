@@ -29,7 +29,8 @@ db.exec(`
     description TEXT NOT NULL,
     price TEXT NOT NULL,
     tag TEXT NOT NULL,
-    emoji TEXT NOT NULL
+    emoji TEXT NOT NULL,
+    topics TEXT DEFAULT ''
   );
 
   CREATE TABLE IF NOT EXISTS suggestions (
@@ -40,9 +41,12 @@ db.exec(`
   );
 `);
 
+// Adiciona coluna topics se não existir
+try { db.exec("ALTER TABLE courses ADD COLUMN topics TEXT DEFAULT ''"); } catch {}
+
 // Cria admin padrão se não existir
 const adminUser = process.env.ADMIN_USER || "admin";
-const adminPass = process.env.ADMIN_PASS || "Moi.752573";
+const adminPass = process.env.ADMIN_PASS || "admin123";
 const adminExists = db.prepare("SELECT * FROM users WHERE username = ?").get(adminUser);
 if (!adminExists) {
   const hash = bcrypt.hashSync(adminPass, 10);
@@ -52,12 +56,12 @@ if (!adminExists) {
 // Insere cursos iniciais
 const count = db.prepare("SELECT COUNT(*) as total FROM courses").get();
 if (count.total === 0) {
-  const insert = db.prepare("INSERT INTO courses (title, description, price, tag, emoji) VALUES (?, ?, ?, ?, ?)");
+  const insert = db.prepare("INSERT INTO courses (title, description, price, tag, emoji, topics) VALUES (?, ?, ?, ?, ?, ?)");
   const courses = [
-    ["O básico que não te ensinaram de JavaScript", "Arrays, objetos, loops e callbacks explicados com exemplos que realmente fazem sentido.", "R$ 27", "Desenrola JS", "🧠"],
-    ["Git sem medo: do commit ao deploy", "Aprenda o fluxo real de trabalho em equipe: clone, branch, push, pull request.", "R$ 22", "Git real", "🔀"],
-    ["React na prática: construa seu primeiro app", "Crie um site do zero entendendo componente, estado e props.", "R$ 34", "React mão na massa", "⚛️"],
-    ["Desbuga sua lógica: exercícios comentados", "Resolução de 15 problemas comuns de lógica e algoritmos explicados linha a linha.", "R$ 19", "Algoritmos", "🔍"]
+    ["O básico que não te ensinaram de JavaScript", "Arrays, objetos, loops e callbacks explicados com exemplos que realmente fazem sentido.", "R$ 27", "Desenrola JS", "🧠", "Variáveis e tipos, Arrays e objetos, Loops for/while, Callbacks, Promises e async/await"],
+    ["Git sem medo: do commit ao deploy", "Aprenda o fluxo real de trabalho em equipe: clone, branch, push, pull request.", "R$ 22", "Git real", "🔀", "Git init e clone, Branch e merge, Push e pull, Pull request, Deploy contínuo"],
+    ["React na prática: construa seu primeiro app", "Crie um site do zero entendendo componente, estado e props.", "R$ 34", "React mão na massa", "⚛️", "Componentes e props, Estado com useState, Efeitos com useEffect, Rotas, Deploy na Vercel"],
+    ["Desbuga sua lógica: exercícios comentados", "Resolução de 15 problemas comuns de lógica e algoritmos explicados linha a linha.", "R$ 19", "Algoritmos", "🔍", "Entrada e saída, Condicionais, Laços, Arrays e strings, Recursão, Ordenação"]
   ];
   const insertMany = db.transaction((courses) => {
     for (const course of courses) insert.run(...course);
@@ -116,11 +120,11 @@ app.get("/admin/suggestions", authMiddleware, (req, res) => {
 });
 
 app.post("/admin/courses", authMiddleware, (req, res) => {
-  const { title, description, price, tag, emoji } = req.body;
+  const { title, description, price, tag, emoji, topics } = req.body;
   if (!title || !description || !price || !tag || !emoji) {
     return res.status(400).json({ error: "Todos os campos são obrigatórios." });
   }
-  db.prepare("INSERT INTO courses (title, description, price, tag, emoji) VALUES (?, ?, ?, ?, ?)").run(title, description, price, tag, emoji);
+  db.prepare("INSERT INTO courses (title, description, price, tag, emoji, topics) VALUES (?, ?, ?, ?, ?, ?)").run(title, description, price, tag, emoji, topics || "");
   res.status(201).json({ message: "Curso criado com sucesso!" });
 });
 
@@ -137,9 +141,9 @@ app.get("/admin/courses", authMiddleware, (req, res) => {
 
 // Atualizar curso
 app.put("/admin/courses/:id", authMiddleware, (req, res) => {
-  const { title, description, price, tag, emoji } = req.body;
-  db.prepare("UPDATE courses SET title=?, description=?, price=?, tag=?, emoji=? WHERE id=?")
-    .run(title, description, price, tag, emoji, req.params.id);
+  const { title, description, price, tag, emoji, topics } = req.body;
+  db.prepare("UPDATE courses SET title=?, description=?, price=?, tag=?, emoji=?, topics=? WHERE id=?")
+    .run(title, description, price, tag, emoji, topics || "", req.params.id);
   res.json({ message: "Curso atualizado!" });
 });
 
@@ -156,7 +160,7 @@ app.delete("/admin/suggestions/:id", authMiddleware, (req, res) => {
   res.json({ message: "Sugestão removida!" });
 });
 
-// Chave PIX (admin define)
+// Chave PIX
 app.get("/admin/pix", authMiddleware, (req, res) => {
   const row = db.prepare("SELECT value FROM settings WHERE key = ?").get("pix_key");
   res.json({ pixKey: row?.value || "" });
