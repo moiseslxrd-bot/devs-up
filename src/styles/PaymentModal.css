@@ -1,0 +1,120 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  color: white;
+}
+
+.modal-emoji {
+  font-size: 3.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.modal-content h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-description {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.modal-price {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.pix-section {
+  background: #0f0f0f;
+  border-radius: 14px;
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.pix-section h4 {
+  margin-bottom: 0.5rem;
+}
+
+.pix-section p {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.pix-key-box {
+  display: flex;
+  gap: 0.5rem;
+  background: #1a1a1e;
+  padding: 0.8rem;
+  border-radius: 10px;
+  align-items: center;
+}
+
+.pix-key-box code {
+  flex: 1;
+  color: white;
+  font-size: 0.9rem;
+  word-break: break-all;
+}
+
+.btn-copy {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.btn-copy:hover {
+  background: #7c3aed;
+}
+
+.pix-note {
+  margin-top: 1rem !important;
+  font-size: 0.78rem !important;
+  color: #666 !important;
+}

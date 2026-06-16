@@ -1,0 +1,42 @@
+.login {
+  max-width: 400px;
+  margin: 6rem auto;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.login h2 {
+  margin-bottom: 1.5rem;
+}
+
+.login input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: #0f0f0f;
+  color: #f0f0f0;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.login input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.login .btn-buy {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+}
+
+.error-msg {
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin-bottom: 0.8rem;
+}

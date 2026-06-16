@@ -1,0 +1,72 @@
+.suggestion-form {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 500px;
+  margin: 2rem auto;
+}
+
+.suggestion-form h2 {
+  margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+  color: #aaaaaa;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.suggestion-form input,
+.suggestion-form textarea {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: #0f0f0f;
+  color: #f0f0f0;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.suggestion-form input:focus,
+.suggestion-form textarea:focus {
+  outline: none;
+  border-color: var(--tag);
+}
+
+.suggestion-form .btn-buy {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+}
+
+.success-message {
+  text-align: center;
+}
+
+.success-message span {
+  font-size: 3rem;
+}
+
+.success-message h3 {
+  margin: 1rem 0 0.5rem;
+}
+
+.success-message p {
+  color: #aaaaaa;
+  margin-bottom: 1.5rem;
+}
+
+.btn-back {
+  background: none;
+  color: var(--tag);
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-back:hover {
+  text-decoration: underline;
+}

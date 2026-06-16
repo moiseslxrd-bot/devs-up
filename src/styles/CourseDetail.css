@@ -1,0 +1,49 @@
+.course-detail {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.btn-back {
+  background: none;
+  color: var(--tag);
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+}
+
+.btn-back:hover {
+  text-decoration: underline;
+}
+
+.detail-emoji {
+  font-size: 4rem;
+  margin-bottom: 0.5rem;
+}
+
+.detail-tag {
+  background: var(--tag);
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.detail-description {
+  color: #cccccc;
+  margin: 1rem 0 2rem;
+  line-height: 1.6;
+}
+
+.detail-price {
+  display: block;
+  font-size: 2rem;
+  color: var(--btn);
+  margin-bottom: 1.5rem;
+}

@@ -1,0 +1,153 @@
+:root {
+  --bg: #0a0a0b;
+  --card-bg: #111114;
+  --card-border: #1e1e24;
+  --text: #f4f4f6;
+  --text-secondary: #9898a0;
+  --primary: #8b5cf6;
+  --primary-light: #a78bfa;
+  --accent: #10b981;
+  --glass: rgba(17, 17, 20, 0.8);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Navbar */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px);
+  background: var(--glass);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.navbar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-size: 1.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: var(--text);
+}
+
+/* Header */
+.app-header {
+  text-align: center;
+  padding: 7rem 0 3rem;
+}
+
+.app-header h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  animation: fadeInDown 0.6s ease;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary-light), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  font-weight: 400;
+  animation: fadeIn 0.8s ease;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 3rem 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--card-border);
+  margin-top: 2rem;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: var(--text);
+}
+
+.app-footer strong {
+  color: var(--primary-light);
+  font-weight: 600;
+}

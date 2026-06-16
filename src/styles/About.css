@@ -1,0 +1,87 @@
+.about {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1rem 0;
+  animation: fadeIn 0.5s ease;
+}
+
+.about .btn-back {
+  background: none;
+  color: var(--primary-light);
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-bottom: 2rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+}
+
+.about .btn-back:hover {
+  text-decoration: underline;
+}
+
+.about-emoji {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.about-content h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, var(--primary-light), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.about-content p {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+}
+
+.about-content strong {
+  color: var(--text);
+}
+
+.about-values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.2rem;
+  margin-top: 2.5rem;
+}
+
+.value-item {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.value-item:hover {
+  border-color: var(--primary);
+  transform: translateY(-4px);
+}
+
+.value-item span {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+.value-item h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.value-item p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}

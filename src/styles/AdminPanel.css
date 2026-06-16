@@ -1,0 +1,219 @@
+.admin-panel {
+  max-width: 1000px;
+  margin: 6rem auto;
+  padding: 0 1rem 3rem;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.admin-header h2 {
+  font-size: 1.8rem;
+}
+
+.btn-logout {
+  background: none;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 0.5rem 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-logout:hover {
+  background: #ef4444;
+  color: white;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-secondary);
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.tab-btn:hover:not(.active) {
+  border-color: var(--primary);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.stat-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-4px);
+}
+
+.stat-card span {
+  font-size: 2.5rem;
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 2.5rem;
+  margin: 0.3rem 0;
+  background: linear-gradient(135deg, var(--primary-light), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.stat-card p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.admin-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.admin-card h3 {
+  margin-bottom: 1.5rem;
+}
+
+.admin-card input {
+  width: 100%;
+  padding: 0.7rem;
+  margin-bottom: 0.8rem;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: #0f0f0f;
+  color: #f0f0f0;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.admin-card input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.form-buttons {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.btn-buy {
+  background: linear-gradient(135deg, var(--primary), #7c3aed);
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  flex: 1;
+}
+
+.btn-cancel {
+  background: none;
+  border: 1px solid #555;
+  color: #aaa;
+  padding: 0.7rem 1.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.list-item span {
+  margin-right: 0.3rem;
+}
+
+.list-item p {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-top: 0.2rem;
+}
+
+.item-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-sm {
+  padding: 0.3rem 0.8rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+}
+
+.btn-sm.edit {
+  background: rgba(139, 92, 246, 0.2);
+  color: var(--primary-light);
+}
+
+.btn-sm.delete {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.date {
+  color: #666;
+  font-size: 0.75rem;
+}
+
+.success-msg {
+  color: var(--accent);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.empty {
+  color: var(--text-secondary);
+}

@@ -1,0 +1,12 @@
+.course-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.loading {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 3rem;
+  font-size: 1.1rem;
+}
