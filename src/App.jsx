@@ -51,11 +51,14 @@ function App() {
   }
 
   function handleSuporte() {
-    handleNavClick("cursos");
-    setTimeout(() => {
-      document.getElementById("suporte")?.scrollIntoView({ behavior: "smooth" });
-    }, 300);
-  }
+  setPage("cursos");
+  setTimeout(() => {
+    const el = document.getElementById("suporte");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  }, 500);
+}
 
   if (page === "admin" && token) {
     return <AdminPanel token={token} onLogout={handleLogout} />;
