@@ -11,6 +11,7 @@ import AdminPanel from "./components/AdminPanel";
 import StudentLogin from "./components/StudentLogin";
 import Register from "./components/Register";
 import StudentPanel from "./components/StudentPanel";
+import ChatBot from "./components/ChatBot";
 import "./styles/App.css";
 
 function App() {
@@ -125,6 +126,8 @@ function App() {
       <footer className="app-footer">
         <p>© 2026 Devs Up — feito por <strong>Moiso Devs</strong></p>
       </footer>
+
+      <ChatBot />
     </div>
   );
 }
