@@ -50,16 +50,6 @@ function App() {
     setSelectedCourse(null);
   }
 
-  function handleSuporte() {
-  setPage("cursos");
-  setTimeout(() => {
-    const el = document.getElementById("suporte");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
-  }, 500);
-}
-
   if (page === "admin" && token) {
     return <AdminPanel token={token} onLogout={handleLogout} />;
   }
@@ -90,7 +80,7 @@ function App() {
             <button className="nav-link" onClick={() => handleNavClick("home")}>Início</button>
             <button className="nav-link" onClick={() => handleNavClick("cursos")}>Cursos</button>
             <button className="nav-link" onClick={() => handleNavClick("about")}>Sobre</button>
-            <button className="nav-link" onClick={handleSuporte}>Suporte</button>
+            <button className="nav-link" onClick={() => handleNavClick("cursos")}>Suporte</button>
             <button className="nav-link" onClick={() => { setPage("student"); setAuthPage("login"); }}>Área do Aluno</button>
             <button className="nav-link" onClick={() => handleNavClick("login")}>Login</button>
           </div>
