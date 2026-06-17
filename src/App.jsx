@@ -50,11 +50,11 @@ function App() {
     setSelectedCourse(null);
   }
 
-  function handleSugerir() {
-    handleNavClick("home");
+  function handleSuporte() {
+    handleNavClick("cursos");
     setTimeout(() => {
-      document.getElementById("sugestao")?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
+      document.getElementById("suporte")?.scrollIntoView({ behavior: "smooth" });
+    }, 300);
   }
 
   if (page === "admin" && token) {
@@ -87,7 +87,7 @@ function App() {
             <button className="nav-link" onClick={() => handleNavClick("home")}>Início</button>
             <button className="nav-link" onClick={() => handleNavClick("cursos")}>Cursos</button>
             <button className="nav-link" onClick={() => handleNavClick("about")}>Sobre</button>
-            <button className="nav-link" onClick={handleSugerir}>Suporte</button>
+            <button className="nav-link" onClick={handleSuporte}>Suporte</button>
             <button className="nav-link" onClick={() => { setPage("student"); setAuthPage("login"); }}>Área do Aluno</button>
             <button className="nav-link" onClick={() => handleNavClick("login")}>Login</button>
           </div>
@@ -110,10 +110,8 @@ function App() {
             )}
           </main>
           <Feedback />
-          <div id="sugestao">
-            <Support />
-            <SuggestionForm />
-          </div>
+          <Support />
+          <SuggestionForm />
         </>
       )}
 

@@ -6,7 +6,7 @@ function Support() {
   const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 
   return (
-    <div className="support">
+    <div className="support" id="suporte">
       <div className="support-content">
         <span className="support-emoji">💬</span>
         <h2>Precisa de ajuda?</h2>
